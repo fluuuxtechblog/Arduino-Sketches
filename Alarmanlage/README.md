@@ -9,3 +9,6 @@ Wird das Pedelec danach bewegt, löst der Gyroskop Sensor aus und eine LED blink
 
 Zum Schluss wird anstatt der blinkenden LED ein 120Hz Piezo genutzt werden.
 Außerdem kann man die Anlage dann nur über einen 4 stelligen Code an der Anlage selber oder per Funk deaktivieren.
+
+<b>libraries</b>
+In diesem Ordner befinden sich alle libraries die in diesem Projekt benötigt werden und die nicht standardmäßig bei Arduino dabei sind.
