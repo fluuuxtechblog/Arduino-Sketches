@@ -4,7 +4,7 @@ Autor: Enrico Sadlowski<br />
 Erstellungsdatum:      27.03.2013<br />
 Letzte Aktualisierung: 28.03.2013<br />
 <h2>Beschreibung:</h2>
-Dieses Sketch wartet auf ankommende Signale überd en seriellen Port
+Dieses Sketch wartet auf ankommende Signale über den seriellen Port
 Wird ein M empfangen dann fängt eine RGB LED an im Takt zu blinken und
 dabei ihre Farbe zu ändern. Wenn ein N empfangen wird, dann wird die LED 
 abgeschaltet.
