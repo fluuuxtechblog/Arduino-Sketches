@@ -1,11 +1,10 @@
-Roller Temperatursensor
-
+<h1>Roller Temperatursensor</h1>
 Projekt:  Temperaturüberwachung für den GOVECS-Roller<br />
 Autor:    Enrico Sadlowski<br />
 Datum:    12.10.2012<br />
 
 <h2>Beschreibung:</h2>
-Beim starten des Rollers ist die Hintergrundbeleuchtung des LCD ist ausgeschaltet.
+Beim starten des Rollers ist die Hintergrundbeleuchtung des LCD ausgeschaltet.
 Beim drücken des Buttons, wird das LCD ein- oder ausgeschaltet. 
 Wenn die Aussentemperatur unterschritten oder die Akkumaximaltemperatur überschritten wird, wird das LCD eingeschaltet
 wenn es zuvor aus war. Zusätzlich wird im Display eine Meldung (ACHTUNG!!!) oder (Glatteisgefahr)
