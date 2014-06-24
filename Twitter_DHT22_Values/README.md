@@ -1,7 +1,7 @@
 Twitter_DHT22_Values
 ================
 
-<a target="_blank" href="http://fluuux.de/2012/10/arduino-temperatur-und-luftfeuchtigkeit-mit-dem-dht22-prufen/">Beitrag im FluuuxTechBlog</a>
+<a target="_blank" href="http://fluuux.de/2013/01/arduino-temperatur-und-luftfeuchte-auf-twitter-posten/">FluuuxTechBlog - Arduino – Temperatur- und Luftfeuchte auf Twitter posten</a>
 
 <h2>Beschreibung</h2>
 Mit diesem Projekt kann man die, durch einen DHT22 Temperatur- und Luftfeuchtesensor, 
