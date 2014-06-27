@@ -7,7 +7,7 @@ Letzte Aktualisierung: 27.06.2014<br />
 <br />
 
 Wenn ich nicht zu Hause bin, möchte ich trotzdem wissen wenn jemand
-bei mir an der Haustür klingelt. Der Arduino sendet mir eine SMS 
+bei mir an der Haustür klingelt.<br />Der Arduino sendet mir eine SMS 
 wenn jemand klingelt.<br />
 <br />
 <h2>todo</h2>
