@@ -21,3 +21,6 @@ Google Docs Tabelle mit dem Namen "Yun" und die 4 Spalten
 <a target="_blank" href="https://www.temboo.com/">Create, Make, Code
 the Internet of Everything</a><br />
 <a target="_blank"href="drive.google.com">Tabelle erstellen -> Google Drive</a>
+
+<h2>Screenshot</h2>
+![ScreenShot](https://raw.github.com/fluuuxtechblog/Arduino-Sketches/master/SaveSensorValues2GoogleDocs/Screenshot%20Google%20Docs%20Tabelle.png)
