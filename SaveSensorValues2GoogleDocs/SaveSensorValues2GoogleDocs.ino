@@ -13,7 +13,8 @@
 #include <Temboo.h>
 #include <Process.h>
 
-#include "TembooAccount.h"           // Tab TembooAccount.h
+#include "TembooAccount.h"           // Temboo Zugangsdaten
+#include "GoogleAccount.h"           // Google Zugangsdaten
 
 
 // Pins (anpassen)
