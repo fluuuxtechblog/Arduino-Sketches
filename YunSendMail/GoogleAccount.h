@@ -1,4 +1,0 @@
-#define GOOGLE_USERNAME ""
-#define GOOGLE_PASSWORD ""
-#define SPREADSHEET_TITLE "Yun"
-#define TO_EMAIL_ADDRESS ""
