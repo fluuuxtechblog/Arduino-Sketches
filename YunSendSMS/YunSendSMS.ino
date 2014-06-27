@@ -1,10 +1,9 @@
 /*************************************************************************
-  Projekt:   Notification of Ringing                                     *
+  Projekt:   YunSendSMS                                                  *
   Developer: Enrico Sadlowski                                            *
                                                                          *
   Wenn ich nicht zu Hause bin, möchte ich trotzdem wissen wenn jemand    *
-  bei mir an der Haustür klingelt. Der Arduino sendet mir eine SMS       *
-  wenn jemand klingelt und nimmt ein Bild von der Webcam auf.            *
+  bei mir an klingelt. Arduino sendet mir in dem Fall eine SMS.          *
 *************************************************************************/
 
 #include <Bridge.h>
