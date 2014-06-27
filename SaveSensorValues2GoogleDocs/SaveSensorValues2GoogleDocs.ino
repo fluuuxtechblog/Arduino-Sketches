@@ -25,7 +25,7 @@ const int sensorTempPin    = A1;    // Analoger Pin an dem der LM335 Temperaturs
 boolean debug_mode         = true;  // Statusmeldungen ausgeben
 int low_temperature_limit  = 10;    // unteres Temperatur Limit;
 int high_temperature_limit = 35;    // oberes Temperatur Limit;
-long saveValuesInterval    = 2;     // Interval in Minuten, in denen die Sensorwerte gespeichert werden sollen
+
 
 //Vars (so lassen)
 int buttonState = 0;
@@ -36,7 +36,6 @@ int temperature;                    // Wert des DHT22 - Temperatur
 //Datum und Zeit
 Process date;
 int day, month, year, hours, minutes, seconds;
-int lastSecond = -1;
 
 
 
@@ -75,8 +74,7 @@ void loop()
   lightLevel       = analogRead(sensorLightPin);
   int tempLevel    = analogRead(sensorTempPin);
   float millivolts = (tempLevel / 1024.0) * 5000;
-  temperature      = (int)((millivolts / 10) - 273.15) / 2;
-  /////// temperature = (millivolts / 10) - 273.15; //2 kOhm Widerstand am LM335 anschließen dann sollte es passen
+  temperature      = (millivolts / 10) - 273.15;
 
 
 
@@ -94,8 +92,7 @@ void loop()
       if (temperature < low_temperature_limit) sendTempAlert("Temperatur ist zu niedrig!");
       else if (temperature > high_temperature_limit) sendTempAlert("Temperatur ist zu hoch!");      
     }  
-  }  
-  //delay(saveValuesInterval * 60 * 1000); //Zeit in minuten in ms umrechnen
+  }
 }
 
 
