@@ -1,4 +1,4 @@
-#define GOOGLE_USERNAME "profwebapps@gmail.com"
-#define GOOGLE_PASSWORD "sajfufojfmodqyar"
+#define GOOGLE_USERNAME ""
+#define GOOGLE_PASSWORD ""
 #define SPREADSHEET_TITLE "Yun"
-#define TO_EMAIL_ADDRESS "profwebapps@fluuux.de"
+#define TO_EMAIL_ADDRESS ""
