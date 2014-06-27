@@ -2,19 +2,16 @@
 Projekt: SaveSensorValues2GoogleDocs<br />
 Autor: Enrico Sadlowski<br />
 Erstellungsdatum:      26.06.2014<br />
-Letzte Aktualisierung: 26.06.2014<br />
+Letzte Aktualisierung: 27.06.2014<br />
 <h2>Beschreibung:</h2>
-Dieses Sketch sendet Das aktuelle Datum und die aktuelle Zeit, sowie Sensorwerte an eine Google Docs Tabelle.
-
-Beim unter- oder überschreiten einer Temperatur wird eine Alarm-eMail verschickt.
-
+Dieses Sketch sendet Das aktuelle Datum und die aktuelle Zeit, sowie Temperatur, Luftfeuchte und Helligkeit an eine Google Docs Tabelle.
 
 <h2>Vorraussetzungen</h2>
 Arduino Yun<br />
 Google Account<br />
 Temboo Account<br />
-Google Docs Tabelle mit dem Namen "Yun" und die 4 Spalten
-"Datum", "Zeit", "Helligkeit", "Temperatur"
+Google Docs Tabelle mit dem Namen "Yun" und den 5 Spalten
+"Datum", "Zeit", "Helligkeit", "Temperatur", "Luftfeuchte"
 
 
 <h2>Links</h2>
