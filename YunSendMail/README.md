@@ -1,9 +1,8 @@
 <h1>YunSendMail</h1>
-Senden einer eMail an einem bestimmten Empfänger wenn ein Sensor ausgelöst wird.
-In der eMail kann der Sensorwert oder ei beliebiger text mitgesendet werden.
+Senden einer eMail an einem bestimmten Empfänger wenn ein Sensor ausgelöst wird.<br />
+In der eMail kann der Sensorwert oder ein beliebiger text mitgesendet werden.
 
-Sie benötigen für dieses Beispiel folgendes
-<br />
+<h2>Sie benötigen für dieses Beispiel folgendes</h2>
 <ul>
 <li>Google Account</li>
 <li>Temboo Account</li>
