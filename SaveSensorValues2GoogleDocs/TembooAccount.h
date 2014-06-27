@@ -1,3 +1,0 @@
-#define TEMBOO_ACCOUNT "EINFÜGEN"
-#define TEMBOO_APP_KEY_NAME "myFirstApp"
-#define TEMBOO_APP_KEY "EINFÜGEN"
