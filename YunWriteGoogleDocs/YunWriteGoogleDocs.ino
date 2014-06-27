@@ -1,5 +1,5 @@
 /****************************************************************************************************************************
-  Projekt: SaveSensorValues2GoogleDocs                                                                                      *
+  Projekt: YunWriteGoogleDocs                                                                                      *
   Autor: Enrico Sadlowski                                                                                                   *
   Erstellungsdatum: 26.06.2014                                                                                              *
   Letzte Aktualisierung: 27.06.2014                                                                                         *
