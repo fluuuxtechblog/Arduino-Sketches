@@ -3,9 +3,7 @@
   Developer: Enrico Sadlowski                                            *
                                                                          *
   Wenn ich nicht zu Hause bin, möchte ich trotzdem wissen wenn jemand    *
-  bei mir an der Haustür klingelt.                                       *
-  Der Arduino sendet mir eine SMS wenn jemand an der Tür klingelt.       *
-  wenn jemand klingelt.                                                  *
+  bei mir an klingelt. Arduino sendet mir in dem Fall eine SMS.          *
 *************************************************************************/
 
 #include <Bridge.h>
