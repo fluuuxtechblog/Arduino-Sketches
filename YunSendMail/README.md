@@ -8,3 +8,5 @@ In der eMail kann der Sensorwert oder ein beliebiger text mitgesendet werden.
 <li>Temboo Account</li>
 <li>Arduino Yun</li>
 </ul>
+<h2>Screenshot</h2>
+![ScreenShot](https://raw.github.com/fluuuxtechblog/Arduino-Sketches/master/YunSendMail/Screenshot.png)
