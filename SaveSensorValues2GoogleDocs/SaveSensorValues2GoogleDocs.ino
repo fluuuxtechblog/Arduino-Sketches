@@ -1,47 +1,45 @@
 /****************************************************************************************************************************
-  Bei einem Druck auf den Button an Digital Pin8 werden die Werte eines LM335 und eines Lichtsensors                        *
-  in einer Google Tabelle (Yun) in Google Drive gespeichert. Außerdem werden jedesmal das aktuelle                          *
-  Datum und die aktuelle Zeit vom embedded Linux ausgelesen und auch in die Google Tabelle gespeichert.                     *
+  Projekt: SaveSensorValues2GoogleDocs                                                                                      *
+  Autor: Enrico Sadlowski                                                                                                   *
+  Erstellungsdatum: 26.06.2014                                                                                              *
+  Letzte Aktualisierung: 27.06.2014                                                                                         *
                                                                                                                             *
-  Unter- oder überschreitet die Temperatur den in "low_temperature_limit" gespeicherten Wert, wird eine eMail geschickt.    *
+  Es werden ständig die Werte eines DHT22 und eines LDR Sensors ermittelt.                                                  *
+  "productiveMode" == true, Die Werte werden an eine Google Drive Tabelle gesendet.                                         *
+  "debugMode" == true, Es werden Meldungen über den Seriellen Port ausgegeben.                                              *
+  Außer Helligkeit, Temperatur und Luftfeuchte wird noch das aktuelle Datum und die aktuelle Zeit.                          * 
+  vom embedded Linux ausgelesen und mit in die Google Tabelle gespeichert.                                                  *
                                                                                                                             *
-  Für dieses Beispiel benötigt man einen Google Account und einen Account bei temboo.com                                    *
+  Vorraussetzungen                                                                                                          *
+  Google Account, temboo.com Account, Google Tabelle mit dem Namen "Yun" im Google Drive Account, Arduino Yun               *                                                                                                          *
 ****************************************************************************************************************************/
 
-// Libraries
+#include <DHT.h>
 #include <Bridge.h>
 #include <Temboo.h>
 #include <Process.h>
 
-#include "TembooAccount.h"           // Temboo Zugangsdaten
-#include "GoogleAccount.h"           // Google Zugangsdaten
+#include "TembooAccount.h"                // Temboo Account Zugangsdaten
+#include "GoogleAccount.h"                // Google Account Zugangsdaten
 
 
-// Pins (anpassen)
-const int buttonPin        = 8;     // the number of the pushbutton pin
-const int sensorLightPin   = A0;    // Analoger Pin an dem der Lichtsensor angeschlossen ist
-const int sensorTempPin    = A1;    // Analoger Pin an dem der LM335 Temperatursensor angeschlossen ist
-
-//Vars (anpassen)
-boolean debug_mode         = true;  // Statusmeldungen ausgeben
-int low_temperature_limit  = 10;    // unteres Temperatur Limit;
-int high_temperature_limit = 35;    // oberes Temperatur Limit;
-
-
-//Vars (so lassen)
-int buttonState = 0;
-int lightLevel;                     // Wert des Helligkeitssensors
-int temperature;                    // Wert des DHT22 - Temperatur
-
-
-//Datum und Zeit
-Process date;
-int day, month, year, hours, minutes, seconds;
+// Diese Daten anpassen
+const boolean productiveMode    = true;   // Nur wenn productivMode == true werden Daten an Google Drive und eMails gesendet
+const boolean debugMode         = true;   // debugMode == true, es werden Messages über den seriellen Monitor ausgegeben
+static const int DHTPin         = 9;      // DigitalPin - DHT22 Sensor    
+static const int ledPin         = 13;     // DigitalPin - LED
+static const int lightPin       = A0;     // Analoger Pin an dem der Lichtsensor angeschlossen ist
+unsigned const long interval    = 3600;   // Interval in Sekunden wie oft die Daten abgefragt und gesendet werden sollen
 
 
 
-
-
+// Ab hier nichts mehr anpassen
+unsigned long previousMillis  =  0;       // Delay Ersatz
+Process date;                             // Datum 
+int day, month, year;                     // Tag Monat und Jahr trennen
+int h, t, l;                              // Humidity, Temperature und Helligkeit
+#define DHTTYPE DHT22                     // DHT11, DHT21, DHT22
+DHT dht(DHTPin, DHTTYPE);
 
 
 
@@ -49,98 +47,53 @@ int day, month, year, hours, minutes, seconds;
 
 void setup()
 {
-  pinMode(buttonPin, INPUT);
   Bridge.begin();
+  dht.begin();
+  pinMode(ledPin, OUTPUT);
   
-  if (debug_mode == true)
+  if (debugMode == true)
   {
     Serial.begin(115200);
-    delay(4000);
     while (!Serial);
+    
+    Serial.println(F("DebugMode..."));
+    if(productiveMode) Serial.println(F("Produktivemode...")); else Serial.println(F("Testmode..."));
+    
+    if(productiveMode == true)
+    {
+      Serial.print(F("Daten werden alle "));
+      Serial.print(interval);
+      Serial.println(F(" Sekunden an Google Drive Tabelle gesendet..."));
+    }
+    
+    Serial.println(F("Setup komplett...\n"));
   }
-
-  if (debug_mode == true) { Serial.println(F("Setup komplett. Button druecken um Sensorwerte zu senden...\n")); }
 }
-
-
 
 
 
 
 
 void loop()
-{
+{ 
+  unsigned long currentMillis = millis();
+   
+  getSensorValues(); //Ständig Sensorwerte ermitteln
   
-  buttonState      = digitalRead(buttonPin);  
-  lightLevel       = analogRead(sensorLightPin);
-  int tempLevel    = analogRead(sensorTempPin);
-  float millivolts = (tempLevel / 1024.0) * 5000;
-  temperature      = (millivolts / 10) - 273.15;
-
-
-
-  
-  if (buttonState == HIGH) 
+  if(currentMillis - previousMillis >= (interval*1000)) 
   {
-    if (debug_mode == true) { Serial.println(F("Aufruf von /Library/Google/Spreadsheets/AppendRow Choreo...")); }
-
-    runAppendRow(lightLevel, temperature); // Sensorwerte an Google Docs sheet senden
-  
-    // Alarmmeldung an eMail senden wenn Temperatur unter dem unteren Temperaturlimit liegt
-    if (temperature < low_temperature_limit || temperature > high_temperature_limit)
+    digitalWrite(ledPin, HIGH);
+        
+    previousMillis = currentMillis;
+    
+    if(productiveMode == true) 
     {
-      if (debug_mode == true) { Serial.println(F("Sende Alarmmeldung per eMail ")); }
-      if (temperature < low_temperature_limit) sendTempAlert("Temperatur ist zu niedrig!");
-      else if (temperature > high_temperature_limit) sendTempAlert("Temperatur ist zu hoch!");      
-    }  
+      if(debugMode == true) { Serial.println(F("Aufruf von /Library/Google/Spreadsheets/AppendRow Choreo...")); }
+      runAppendRow(l, t, h); 
+    } else { if(debugMode == true) Serial.println(F("Testmodus - Es werden keine Daten gesendet")); }
   }
+  digitalWrite(ledPin, LOW);
 }
-
-
-
-
-
-
-
-
-
-/************************************************************************
-                                                                        *
-  Alarm beim über- oder unterschreiten der Temperatur per eMail senden  *
-                                                                        *
-************************************************************************/
-void sendTempAlert(String message)
-{
-  if(debug_mode == true) { Serial.println(F("eMail wird gesendet...")); }
-  TembooChoreo SendEmailChoreo;
-  SendEmailChoreo.begin();
-  SendEmailChoreo.setAccountName(TEMBOO_ACCOUNT);
-  SendEmailChoreo.setAppKeyName(TEMBOO_APP_KEY_NAME);
-  SendEmailChoreo.setAppKey(TEMBOO_APP_KEY);
-  SendEmailChoreo.setChoreo("/Library/Google/Gmail/SendEmail");
-  SendEmailChoreo.addInput("Username", GOOGLE_USERNAME);
-  SendEmailChoreo.addInput("Password", GOOGLE_PASSWORD);
-  SendEmailChoreo.addInput("ToAddress", TO_EMAIL_ADDRESS);
-  SendEmailChoreo.addInput("Subject", "ALARM: Home Temperature");
-  SendEmailChoreo.addInput("MessageBody", message);
-
-  unsigned int returnCode = SendEmailChoreo.run();
-
-  if (returnCode == 0) {
-    if (debug_mode == true) { Serial.println(F("eMail wurde erfolgreich gesendet!")); }
-  } else {
-    while (SendEmailChoreo.available()) {
-      char c = SendEmailChoreo.read();
-      if (debug_mode == true) { Serial.print(c); }
-    }
-  }
-  SendEmailChoreo.close();
-}
-
-
-
-
-
 
 
 
@@ -151,7 +104,7 @@ void sendTempAlert(String message)
   Daten in Google Tabelle auf Google Docs schreiben  *
                                                      *
 *****************************************************/
-void runAppendRow(int lightLevel, float temperature)
+void runAppendRow(int lightLevel, int temperature, int humidity)
 {
   TembooChoreo AppendRowChoreo;
 
@@ -164,30 +117,23 @@ void runAppendRow(int lightLevel, float temperature)
   AppendRowChoreo.addInput("Password", GOOGLE_PASSWORD);
   AppendRowChoreo.addInput("SpreadsheetTitle", SPREADSHEET_TITLE);
 
-  String data = parseDateTime()+","+String(lightLevel)+","+String(temperature);
+  String data = parseDateTime()+","+String(lightLevel)+","+String(temperature)+","+String(humidity);
   AppendRowChoreo.addInput("RowData", data);
 
   unsigned int returnCode = AppendRowChoreo.run();
 
   if (returnCode == 0) {
-    if (debug_mode == true) { Serial.println(F("Ausfuehrung von /Library/Google/Spreadsheets/AppendRow Choreo komplett.\n")); }
+    if (debugMode == true) { Serial.println(F("Ausfuehrung von /Library/Google/Spreadsheets/AppendRow Choreo komplett.\n")); }
   } else {
     while (AppendRowChoreo.available()) {
       char c = AppendRowChoreo.read();
-      if (debug_mode == true) { Serial.print(c); }
+      if (debugMode == true) { Serial.print(c); }
     }
-    if (debug_mode == true) { Serial.println(); }
+    if (debugMode == true) { Serial.println(); }
   }
   AppendRowChoreo.close();
-  
-  if (debug_mode == true) { Serial.print(data); Serial.println(F(" an Google Docs gesendet"));  }
+  if (debugMode == true) { Serial.print(data); Serial.println(F(" an Google Docs gesendet"));  }
 }
-
-
-
-
-
-
 
 
 
@@ -245,4 +191,37 @@ String parseDateTime()
     result += timeStr;
   }
   return result;
+}
+
+
+
+
+/*******************************************************
+                                                       *
+  Sensorwerte des DHT22 und des LDR Sensors ermitteln  *
+                                                       *
+*******************************************************/
+void getSensorValues()
+{
+  h = dht.readHumidity();    // Luftfeuchte auslesen
+  t = dht.readTemperature(); // Temperatur auslesen
+  l = analogRead(lightPin);  // Lichtstärke auslesen
+  
+  
+  if(debugMode == true)
+  {
+    if (isnan(t) || isnan(h)) 
+    {
+      Serial.println(F("DHT22 konnte nicht ausgelesen werden"));
+    } 
+    else
+    {          
+      Serial.print(F("Luftfeuchte: ")); 
+      Serial.print(h);
+      Serial.print(F("%\t"));
+      Serial.print(F("Temperatur: ")); 
+      Serial.print(t);
+      Serial.println(F("C"));
+    }
+  }
 }
