@@ -20,4 +20,4 @@ the Internet of Everything</a><br />
 <a target="_blank"href="http://drive.google.com">Tabelle erstellen -> Google Drive</a>
 
 <h2>Screenshot</h2>
-![ScreenShot](https://raw.github.com/fluuuxtechblog/Arduino-Sketches/master/SaveSensorValues2GoogleDocs/Screenshot-Google-Tabelle.png)
+![ScreenShot](https://raw.github.com/fluuuxtechblog/Arduino-Sketches/master/SaveSensorValues2GoogleDocs/Screenshot-Google-Drive-Tabelle.png)
